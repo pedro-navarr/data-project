@@ -37,4 +37,4 @@ Para fechar o ciclo do dado, foi construído um Dashboard SQL interativo compost
 ---
 
 ### 🚀 Como Visualizar
-* Os notebooks com o código de engenharia de dados (Silver e Gold) estão na pasta `/notebooks`.
+* Os notebooks com os códigos (Bronze, Silver e Gold) estão na logo acima.
