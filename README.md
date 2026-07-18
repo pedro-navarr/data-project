@@ -38,4 +38,4 @@ Para fechar o ciclo do dado, foi construído um Dashboard SQL interativo compost
 
 ### 🚀 Como Visualizar
 * Os notebooks com os códigos (Bronze, Silver e Gold) estão na logo acima no repositorio.
-* As imagens do Dashboard estao na pasta "dashboard_images" e e abaixo o arquivo Json do Dashboard para importar dentro do Databricks.
+* As imagens do Dashboard estao na pasta "dashboard_images" e abaixo o arquivo Json do Dashboard para importar dentro do Databricks.
