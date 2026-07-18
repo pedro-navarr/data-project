@@ -1,0 +1,494 @@
+{
+  "datasets": [
+    {
+      "name": "afbfb24f",
+      "displayName": "Top Ten Risk Profiles by Accident Count",
+      "queryLines": [
+        "SELECT * FROM workspace.projeto_analytics_2.perfil_risco_modelo_gold ORDER BY total_acidentes DESC LIMIT 10"
+      ]
+    },
+    {
+      "name": "eaccd55c",
+      "displayName": "Accident Totals Grouped by State Analysis",
+      "queryLines": [
+        "SELECT TRIM(UPPER(ocorrencia_uf)) AS Estados, SUM(total_acidentes) as Total_Acidentes FROM workspace.projeto_analytics_2.sazonalidade_horario_gold WHERE ocorrencia_uf != \"NAO INFORMADO\" AND ocorrencia_uf IS NOT NULL GROUP BY Estados"
+      ]
+    },
+    {
+      "name": "6d5dff5e",
+      "displayName": "Monthly Event Totals Aggregated by Period",
+      "queryLines": [
+        "SELECT Mes, SUM(total_eventos) AS Total_Eventos FROM workspace.projeto_analytics_2.sazonalidade_horario_gold GROUP BY Mes ORDER BY Mes"
+      ]
+    },
+    {
+      "name": "6402e88a",
+      "displayName": "Brazilian State Occurrence Summary Dataset",
+      "queryLines": [
+        "SELECT\r\n",
+        "    CASE \r\n",
+        "        WHEN ocorrencia_uf = 'SP' THEN 'São Paulo'\r\n",
+        "        WHEN ocorrencia_uf = 'RJ' THEN 'Rio de Janeiro'\r\n",
+        "        WHEN ocorrencia_uf = 'MG' THEN 'Minas Gerais'\r\n",
+        "        WHEN ocorrencia_uf = 'ES' THEN 'Espírito Santo'\r\n",
+        "        WHEN ocorrencia_uf = 'AC' THEN 'Acre'\r\n",
+        "        WHEN ocorrencia_uf = 'AL' THEN 'Alagoas'\r\n",
+        "        WHEN ocorrencia_uf = 'AP' THEN 'Amapá'\r\n",
+        "        WHEN ocorrencia_uf = 'AM' THEN 'Amazonas'\r\n",
+        "        WHEN ocorrencia_uf = 'BA' THEN 'Bahia'\r\n",
+        "        WHEN ocorrencia_uf = 'CE' THEN 'Ceará'\r\n",
+        "        WHEN ocorrencia_uf = 'DF' THEN 'Distrito Federal'\r\n",
+        "        WHEN ocorrencia_uf = 'GO' THEN 'Goiás'\r\n",
+        "        WHEN ocorrencia_uf = 'MA' THEN 'Maranhão'\r\n",
+        "        WHEN ocorrencia_uf = 'MT' THEN 'Mato Grosso'\r\n",
+        "        WHEN ocorrencia_uf = 'MS' THEN 'Mato Grosso do Sul'\r\n",
+        "        WHEN ocorrencia_uf = 'PA' THEN 'Pará'\r\n",
+        "        WHEN ocorrencia_uf = 'PB' THEN 'Paraíba'\r\n",
+        "        WHEN ocorrencia_uf = 'PE' THEN 'Pernambuco'\r\n",
+        "        WHEN ocorrencia_uf = 'PI' THEN 'Piauí'\r\n",
+        "        WHEN ocorrencia_uf = 'PR' THEN 'Paraná'\r\n",
+        "        WHEN ocorrencia_uf = 'RN' THEN 'Rio Grande do Norte'\r\n",
+        "        WHEN ocorrencia_uf = 'RO' THEN 'Rondônia'\r\n",
+        "        WHEN ocorrencia_uf = 'RR' THEN 'Roraima'\r\n",
+        "        WHEN ocorrencia_uf = 'RS' THEN 'Rio Grande do Sul'\r\n",
+        "        WHEN ocorrencia_uf = 'SC' THEN 'Santa Catarina'\r\n",
+        "        WHEN ocorrencia_uf = 'SE' THEN 'Sergipe'\r\n",
+        "        WHEN ocorrencia_uf = 'TO' THEN 'Tocantins'\r\n",
+        "        ELSE ocorrencia_uf \r\n",
+        "    END AS Estado_Nome,\r\n",
+        "    SUM(total_acidentes) AS Acidentes\r\n",
+        "FROM workspace.projeto_analytics_2.sazonalidade_horario_gold\r\n",
+        "WHERE ocorrencia_uf != \"NAO INFORMADO\"\r\n",
+        "GROUP BY Estado_Nome"
+      ],
+      "catalog": "workspace",
+      "schema": "projeto_analytics_2"
+    },
+    {
+      "name": "18c318b8",
+      "displayName": "Aeronautical Incident Classification Counts Summary",
+      "queryLines": [
+        "SELECT \r\n",
+        "    ocorrencia_classificacao,\r\n",
+        "    COUNT(*) AS Total\r\n",
+        "FROM\r\n",
+        "    workspace.projeto_analytics_2.aeronautica_ocorrencia_silver\r\n",
+        "WHERE\r\n",
+        "    ocorrencia_classificacAO IS NOT NULL\r\n",
+        "GROUP BY \r\n",
+        "    ocorrencia_classificacao"
+      ]
+    },
+    {
+      "name": "c5e365cc",
+      "displayName": "Aircraft Engine Types and Incident Classification Counts",
+      "queryLines": [
+        "SELECT\r\n",
+        "    aa.aeronave_motor_tipo,\r\n",
+        "    ao.ocorrencia_classificacao,\r\n",
+        "    COUNT(*) AS Total\r\n",
+        "FROM\r\n",
+        "    workspace.projeto_analytics_2.aeronautica_aeronave_silver AS aa\r\n",
+        "INNER JOIN\r\n",
+        "        workspace.projeto_analytics_2.aeronautica_ocorrencia_silver AS ao ON aa.codigo_ocorrencia2 = ao.codigo_ocorrencia\r\n",
+        "WHERE\r\n",
+        "    aa.aeronave_motor_tipo != \"NAO INFORMADO\"\r\n",
+        "GROUP BY\r\n",
+        "    aa.aeronave_motor_tipo,\r\n",
+        "    ao.ocorrencia_classificacao\r\n",
+        "ORDER BY\r\n",
+        "     Total DESC\r\n",
+        "\r\n"
+      ],
+      "catalog": "workspace",
+      "schema": "projeto_analytics_2"
+    }
+  ],
+  "pages": [
+    {
+      "name": "4bb3d978",
+      "displayName": "Untitled page",
+      "layout": [
+        {
+          "widget": {
+            "name": "2b28d4d3",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "afbfb24f",
+                  "fields": [
+                    {
+                      "name": "percentual_acidentes",
+                      "expression": "`percentual_acidentes`"
+                    },
+                    {
+                      "name": "total_acidentes",
+                      "expression": "`total_acidentes`"
+                    },
+                    {
+                      "name": "aeronave_modelo",
+                      "expression": "`aeronave_modelo`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "showDescription": false,
+                "title": "Top 10 Modelos de Aeronaves com Maior Volume de Acidentes"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "total_acidentes",
+                  "displayName": "Total de Acidentes",
+                  "scale": {
+                    "type": "quantitative",
+                    "reverse": false
+                  }
+                },
+                "y": {
+                  "fieldName": "aeronave_modelo",
+                  "displayName": "Modelo da Aeronave",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "custom-order",
+                      "orderedValues": [
+                        "R44",
+                        "EMB-810D",
+                        "EMB-810C",
+                        "PA-25-235",
+                        "R44 II",
+                        "AB-115",
+                        "A188B",
+                        "EMB-202A",
+                        "EMB-201A",
+                        "EMB-202"
+                      ]
+                    }
+                  }
+                },
+                "label": {
+                  "show": true
+                },
+                "extra": [
+                  {
+                    "fieldName": "percentual_acidentes"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "b7bfcf0f",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "6402e88a",
+                  "fields": [
+                    {
+                      "name": "Acidentes",
+                      "expression": "`Acidentes`"
+                    },
+                    {
+                      "name": "Estado_Nome",
+                      "expression": "`Estado_Nome`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "frame": {
+                "showTitle": true,
+                "title": "Volume de Acidentes Aeronáuticos por Estado"
+              },
+              "widgetType": "choropleth-map",
+              "encodings": {
+                "color": {
+                  "fieldName": "Acidentes",
+                  "scale": {
+                    "type": "quantitative",
+                    "domain": {
+                      "min": 0,
+                      "max": 600
+                    }
+                  }
+                },
+                "region": {
+                  "regionType": "mapbox-v4-admin",
+                  "admin0": {
+                    "type": "value",
+                    "value": "Brasil",
+                    "geographicRole": "admin0-name"
+                  },
+                  "admin1": {
+                    "fieldName": "Estado_Nome",
+                    "type": "field",
+                    "geographicRole": "admin1-name"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "10fcf64a",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "18c318b8",
+                  "fields": [
+                    {
+                      "name": "Total",
+                      "expression": "`Total`"
+                    },
+                    {
+                      "name": "ocorrencia_classificacao",
+                      "expression": "`ocorrencia_classificacao`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Proporção de Ocorrências por Severidade (Classificação)"
+              },
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "Total",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "ocorrencia_classificacao",
+                  "displayName": "Classificaçoes",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "INCIDENTE GRAVE",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 2
+                        }
+                      },
+                      {
+                        "value": "ACIDENTE",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 4
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 13,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "6f4bd275",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "c5e365cc",
+                  "fields": [
+                    {
+                      "name": "ocorrencia_classificacao",
+                      "expression": "`ocorrencia_classificacao`"
+                    },
+                    {
+                      "name": "aeronave_motor_tipo",
+                      "expression": "`aeronave_motor_tipo`"
+                    },
+                    {
+                      "name": "Total",
+                      "expression": "`Total`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Total de Ocorrências por Tipo de Motor da Aeronave"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "aeronave_motor_tipo",
+                  "displayName": "Tipo ",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "Total",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "extra": [
+                  {
+                    "fieldName": "ocorrencia_classificacao"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 13,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "8ecf413a",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "6d5dff5e",
+                  "fields": [
+                    {
+                      "name": "Mes",
+                      "expression": "`Mes`"
+                    },
+                    {
+                      "name": "Total_Eventos",
+                      "expression": "`Total_Eventos`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Evolução Mensal do Total de Eventos Aeronáuticos"
+              },
+              "widgetType": "area",
+              "encodings": {
+                "x": {
+                  "fieldName": "Mes",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "custom-order",
+                      "orderedValues": [
+                        "January",
+                        "February",
+                        "March",
+                        "April",
+                        "May",
+                        "June",
+                        "July",
+                        "August",
+                        "September",
+                        "October",
+                        "November",
+                        "December"
+                      ]
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "Total_Eventos",
+                  "displayName": "Total de Eventos",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 8,
+            "width": 6,
+            "height": 5
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "207f4669",
+      "displayName": "Global Filters",
+      "pageType": "PAGE_TYPE_GLOBAL_FILTERS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
